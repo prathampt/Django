@@ -1,0 +1,23 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search Result
+{% endblock %}
+
+{% block body %}
+    <h1>
+        Search Result for <a style="font-style: italic; font-weight: bolder;">"{{q}}"</a>
+    </h1>
+
+    <ul>
+        {% for entry in entries %}
+            <li>
+                <a href="{{entry}}/">{{ entry }}</a>
+            </li>
+        {% empty %}
+            <div style="color: red; font-weight: bold;margin-top: 50px;">
+                Sorry, it seems like your search <a style="font-style: italic; font-weight: bolder;">"{{q}}"</a> does not match anything.
+            </div>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,10 +1,15 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    404: Not Found Error
+    {% if key == 404 %}
+        404: Not Found Error
+    {% else %}
+        Page already exists
+    {% endif %}
 {% endblock %}
 
 {% block body %}
+    {% if key == 404 %}
     <h1>
         404: Not Found Error
     </h1>
@@ -12,4 +17,14 @@
     <h3>
         The Page you requested was not found.
     </h3>
+    {% else %}
+    <h1>
+        Error
+    </h1>
+
+    <h3>
+        The entry you are trying to make already exists.
+    </h3>
+    {% endif %}
+    
 {% endblock %}
