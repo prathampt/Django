@@ -56,9 +56,7 @@ def createNew(request):
                 return render(request, "encyclopedia/error.html")
             else:
                 util.save_entry(title, f"# {title}\n\n" + content)
-                return HttpResponseRedirect(reverse("index"),{
-                   "entries": util.list_entries() 
-                })
+                return entryTitle(request, title)
 
     return render(request, "encyclopedia/createpage.html",{
         "form": create()
