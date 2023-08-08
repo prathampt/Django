@@ -11,8 +11,8 @@ class search(forms.Form):
     q = forms.CharField()
 
 class create(forms.Form):
-    title = forms.CharField(max_length=20)
-    content = forms.CharField(widget=forms.Textarea)
+    title = forms.CharField(max_length=20, label="Title")
+    content = forms.CharField(widget=forms.Textarea, label="Content")
 
 def index(request):
     if request.method == "POST":
