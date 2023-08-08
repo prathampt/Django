@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from markdown2 import Markdown
 from django import forms
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from . import util
 
 markdowner = Markdown()
@@ -8,8 +10,9 @@ markdowner = Markdown()
 class search(forms.Form):
     q = forms.CharField()
 
-class new():
-    pass
+class create(forms.Form):
+    title = forms.CharField(max_length=20)
+    content = forms.CharField(widget=forms.Textarea)
 
 def index(request):
     if request.method == "POST":
@@ -45,12 +48,18 @@ def entryTitle(request, title):
 
 def createNew(request):
     if request.method == "POST":
-        title = new(request.POST)
-        if title.is_valid():
-            q = entry.cleaned_data['q']
-            if q in list(filter(lambda x: q.lower() in x.lower(), util.list_entries())):
+        add = create(request.POST)
+        if add.is_valid():
+            title = add.cleaned_data['title']
+            content = add.cleaned_data['content']
+            if title in list(filter(lambda x: title.lower() in title.lower(), util.list_entries())):
                 return render(request, "encyclopedia/error.html")
             else:
-                pass
+                util.save_entry(title, content)
+                return HttpResponseRedirect(reverse("index"),{
+                   "entries": util.list_entries() 
+                })
 
-    return render(request, "encyclopedia/createpage.html")
+    return render(request, "encyclopedia/createpage.html",{
+        "form": create()
+    })
