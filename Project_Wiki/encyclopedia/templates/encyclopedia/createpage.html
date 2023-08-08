@@ -8,17 +8,10 @@
     <div>
         <form action="{% url 'createNew' %}" method="post">
             {% csrf_token %}
-            <div>
-                <div>
-                    {{ form.title.label }}
-                    {{ form.title }}
-                </div>
-                <div>
-                    {{ form.content.label }}
-                    {{ form.content }}
-                </div>
-                <div style="align-self: center;">
-                    <button class="btn btn-outline-success" type="submit">Submit</button>
+            <div style="padding: 30px;">
+                {{ form }}
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-outline-success" type="submit" style="margin-right: 20px;">Submit</button>
                     <button class="btn btn-outline-primary" type="reset">Reset</button>
                 </div>
             </div>

@@ -11,8 +11,8 @@ class search(forms.Form):
     q = forms.CharField()
 
 class create(forms.Form):
-    title = forms.CharField(max_length=20, label="Title")
-    content = forms.CharField(widget=forms.Textarea, label="Content")
+    title = forms.CharField(max_length=20, label="Title",widget=forms.TextInput(attrs={'class':"form-control", 'id':"exampleFormControlInput1"}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'class':"form-control", 'id':"exampleFormControlTextarea1", 'rows':"10",'cols':'20','placeholder':"Write the **markdown** text like #this here."}), label="Content")
 
 def index(request):
     if request.method == "POST":
@@ -55,7 +55,7 @@ def createNew(request):
             if title in list(filter(lambda x: title.lower() in title.lower(), util.list_entries())):
                 return render(request, "encyclopedia/error.html")
             else:
-                util.save_entry(title, content)
+                util.save_entry(title, f"# {title}\n\n" + content)
                 return HttpResponseRedirect(reverse("index"),{
                    "entries": util.list_entries() 
                 })
