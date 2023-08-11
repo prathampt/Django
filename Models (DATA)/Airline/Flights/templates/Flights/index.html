@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Index</title>
-    </head>
-    <body>
-        Index
-    </body>
-</html>
+{% extends 'Flights/layout.html' %}
+
+{% block body %}
+    <h1>Flights</h1>
+    {% for flight in flights %}
+        <ul>
+            <a href="{% url 'flight' flight.id %}" style="text-decoration: none;">
+                <li>{{ flight.id }}: From {{ flight.origin.city }} to {{ flight.destination.city }}.</li>
+            </a>
+        </ul>
+    {% endfor %}
+{% endblock %}
