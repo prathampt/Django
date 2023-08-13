@@ -4,6 +4,7 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from . import util
+import random
 
 markdowner = Markdown()
 
@@ -36,13 +37,13 @@ def index(request):
     })
 
 def entryTitle(request, title):
-    entry = util.get_entry(title)
+    entry = str(util.get_entry(title)).strip()
     if not entry:
         return render(request, "encyclopedia/error.html", {
                 "key" : 404
             })
     return render(request, "encyclopedia/entry.html", {
-        "entry": markdowner.convert(entry),
+        "entry": str(markdowner.convert(entry)).strip(),
         "title": title
     })
 
@@ -59,5 +60,31 @@ def createNew(request):
                 return entryTitle(request, title)
 
     return render(request, "encyclopedia/createpage.html",{
-        "form": create()
+        "form": create(),
+        "action": "Submit"
+    })
+
+def edit(request, title):
+    if request.method == "POST":
+        add = create(request.POST)
+        if add.is_valid():
+            title = add.cleaned_data['title']
+            content = str(add.cleaned_data['content']).strip()
+            util.save_entry(title, content)
+            return entryTitle(request, title)
+
+    entry = str(util.get_entry(title))
+    return render(request, "encyclopedia/createpage.html",{
+    "form": create({'title':f"{title}", 'content':f"{entry.strip()}"}),
+    "title": title
+})
+
+
+def Random(request):
+    title = random.choice(util.list_entries())
+    entry = util.get_entry(title)
+    
+    return render(request, "encyclopedia/entry.html", {
+        "entry": markdowner.convert(entry),
+        "title": title
     })

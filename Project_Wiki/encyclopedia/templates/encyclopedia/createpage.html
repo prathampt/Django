@@ -5,16 +5,33 @@
 {% endblock %}
 
 {% block body %}
+    <h1>Create New Wiki Page</h1>
     <div>
-        <form action="{% url 'createNew' %}" method="post">
+        {% if action == "Submit" %}
+            <form action="{% url 'createNew' %}" method="post">
+                {% csrf_token %}
+                <div style="padding: 30px;">
+                    {{ form }}
+                    <div style="margin-top: 30px;">
+                        <button class="btn btn-outline-success" type="submit" style="margin-right: 20px;">Submit</button>
+                        <button class="btn btn-outline-primary" type="reset">Reset</button>
+                    </div>
+                </div>
+            </form>
+        {% else %}
+        <form action="{% url 'edit' title %}" method="post">
             {% csrf_token %}
             <div style="padding: 30px;">
-                {{ form }}
+                {{ form.title }}
+                <div class="alert alert-secondary" role="alert" style="margin-top: 20px;">
+                    If you are changing the title, kindly change it in both the places (above as well as below).
+                </div>
+                {{ form.content }}
                 <div style="margin-top: 30px;">
-                    <button class="btn btn-outline-success" type="submit" style="margin-right: 20px;">Submit</button>
-                    <button class="btn btn-outline-primary" type="reset">Reset</button>
+                    <button class="btn btn-outline-success" type="submit" style="margin-right: 20px;">Save</button>
                 </div>
             </div>
         </form>
+        {% endif %}
     </div>
 {% endblock %}

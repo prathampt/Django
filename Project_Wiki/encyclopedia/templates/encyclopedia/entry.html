@@ -6,4 +6,9 @@
 
 {% block body %}
     {{ entry|safe }}
+
+    <form action="{% url 'edit' title %}">
+        <input type="hidden">
+        <button type="submit" class="btn btn-dark">Edit</button>
+    </form>
 {% endblock %}
